@@ -18,7 +18,7 @@ export class Akeneo implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Akeneo',
 		icon: 'file:akeneo.svg',
-		name: 'Akeneo X',
+		name: 'Akeneo',
 		group: ['transform'],
 		version: 1,
 		description: 'Akeneo by pixelInfinito',
