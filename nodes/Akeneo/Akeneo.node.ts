@@ -177,11 +177,21 @@ export class Akeneo implements INodeType {
 								break;
 
 							case 'findAll':
-								return [await paginateResponse(baseURL + '/api/rest/v1/products?limit=100', token)];
+								const findAllResult = await paginateResponse(baseURL + '/api/rest/v1/products?limit=100', token);
+								if (findAllResult.error) {
+									item.json['message'] = findAllResult.error;
+								} else if (findAllResult.data) {
+									return [findAllResult.data];
+								}
 								break;
 
 							case 'buildCall':
-								return [await paginateResponse(baseURL + '/api/rest/v1/products' + apiRequest, token)];
+								const buildCallResult = await paginateResponse(baseURL + '/api/rest/v1/products' + apiRequest, token);
+								if (buildCallResult.error) {
+									item.json['message'] = buildCallResult.error;
+								} else if (buildCallResult.data) {
+									return [buildCallResult.data];
+								}
 								break;
 
 							case 'find':

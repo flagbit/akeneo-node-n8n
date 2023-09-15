@@ -1,7 +1,10 @@
 import * as akeneoRequest from "./akeneoRequest";
 import {changeToList} from "./changeToList";
+import {PaginationResponse} from "../types/paginationResponse";
 
-export async function paginateResponse(url: string, token: any) {
+
+
+export async function paginateResponse(url: string, token: any): Promise<PaginationResponse> {
 	let akeneoItems: any[] = [];
 	let response;
 	let next = url;
@@ -10,6 +13,10 @@ export async function paginateResponse(url: string, token: any) {
 			token: token.access_token,
 			url: next,
 		});
+
+		if(response.error) {
+			return {error: response.error.response.data};
+		}
 		if (response._links.next !== undefined) {
 			next = response._links.next.href;
 		}
@@ -17,5 +24,5 @@ export async function paginateResponse(url: string, token: any) {
 	}
 	while (response._links.next !== undefined);
 
-	return changeToList(akeneoItems);
+	return {data: changeToList(akeneoItems)};
 }
