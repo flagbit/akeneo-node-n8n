@@ -178,6 +178,10 @@ export class Akeneo implements INodeType {
 
 							case 'findAll':
 								const findAllResult = await paginateResponse(baseURL + '/api/rest/v1/products?limit=100', token);
+								// We return in two different ways, because
+								// The original plugin is not pagination aware
+								// It can only return one item, we want multiple items
+								// However, we use the existing error handling
 								if (findAllResult.error) {
 									item.json['message'] = findAllResult.error;
 								} else if (findAllResult.data) {
