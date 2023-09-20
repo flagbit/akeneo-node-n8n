@@ -3,9 +3,10 @@ import {changeToList} from "./changeToList";
 import {PaginationResponse} from "../types/paginationResponse";
 
 
-
-export async function paginateResponse(url: string, token: any): Promise<PaginationResponse> {
-	let akeneoItems: any[] = [];
+export async function paginateResponse(url: string, token: {
+	access_token: string;
+}): Promise<PaginationResponse> {
+	let akeneoItems: {}[] = [];
 	let response;
 	let next = url;
 	do {
@@ -14,7 +15,7 @@ export async function paginateResponse(url: string, token: any): Promise<Paginat
 			url: next,
 		});
 
-		if(response.error) {
+		if (response.error) {
 			return {error: response.error.response.data};
 		}
 		if (response._links.next !== undefined) {
