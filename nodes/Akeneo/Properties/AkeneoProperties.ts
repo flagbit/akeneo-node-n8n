@@ -2,7 +2,6 @@ import { INodeProperties } from 'n8n-workflow';
 
 // When the resource `httpVerb` is selected, this `operation` parameter will be shown.
 export const AkeneoProperties: INodeProperties[] = [
-
 	{
 		displayName: 'Recurso',
 		name: 'resource',
@@ -41,6 +40,11 @@ export const AkeneoProperties: INodeProperties[] = [
 		required: true,
 		options: [
 			{
+				name: 'Build Call',
+				value: 'buildCall',
+				action: 'Build your own call',
+			},
+			{
 				name: 'Create',
 				value: 'create',
 				action: 'Create a produto',
@@ -65,14 +69,9 @@ export const AkeneoProperties: INodeProperties[] = [
 				value: 'patch',
 				action: 'Patch a produto',
 			},
-			{
-				name: 'Build Call',
-				value: 'buildCall',
-				action: 'Build your own call',
-			},
 		],
-		displayOptions:{
-			show:{
+		displayOptions: {
+			show: {
 				resource: ['Produto'],
 			},
 		},
@@ -94,8 +93,8 @@ export const AkeneoProperties: INodeProperties[] = [
 				value: 'find',
 			},
 		],
-		displayOptions:{
-			show:{
+		displayOptions: {
+			show: {
 				resource: ['File', 'Locale'],
 			},
 		},
@@ -121,8 +120,8 @@ export const AkeneoProperties: INodeProperties[] = [
 				value: 'create',
 			},
 		],
-		displayOptions:{
-			show:{
+		displayOptions: {
+			show: {
 				resource: ['Category', 'Group'],
 			},
 		},
@@ -149,11 +148,10 @@ export const AkeneoProperties: INodeProperties[] = [
 				value: 'find',
 			},
 		],
-		displayOptions:{
-			show:{
+		displayOptions: {
+			show: {
 				resource: ['Family'],
 			},
 		},
 	},
-
 ];

@@ -157,7 +157,7 @@ export class Akeneo implements INodeType {
 											"identifier": identifier,
 											"attribute": "picture",
 											"scope": null,
-											"locale": null
+											"locale": null,
 										}));
 										form.append('file', newFile, 'logo.png');
 

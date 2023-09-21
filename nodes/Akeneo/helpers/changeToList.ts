@@ -1,10 +1,10 @@
-import {IDataObject, INodeExecutionData} from "n8n-workflow";
+import {INodeExecutionData} from "n8n-workflow";
 
-export function changeToList(data: any[]): INodeExecutionData[] {
+export function changeToList(data: {}[]): INodeExecutionData[] {
 	const out: INodeExecutionData[] = [];
-	if(data) {
+	if (data) {
 		data.forEach((item: object) => {
-			out.push(<INodeExecutionData>{json: item});
+			out.push({json: item} as INodeExecutionData);
 		});
 	}
 	return out;

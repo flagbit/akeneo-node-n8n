@@ -22,6 +22,11 @@ You need the following installed on your development machine:
 3. install the node with the name of `n8n-nodes-akeneo`
 4. example ![Banner image](https://github.com/pixelinfinito/akeneo-node-n8n/blob/main/images/example.png)
  
+## Using on flagbit
+
+`npm i @flagbit/n8n-nodes-akeneo`
+
+Add to project `package.json` as desired.
 
 ## Using locally
 
