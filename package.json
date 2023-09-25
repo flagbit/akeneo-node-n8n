@@ -1,7 +1,7 @@
 {
   "name": "@flagbit/n8n-nodes-akeneo",
   "version": "0.1.2",
-  "description": "A node to use some features of the Akeneo platform. Modified by flagbit",
+  "description": "A node to use some features of the Akeneo platform. Originally by https://pixel.ao, modified by flagbit",
   "keywords": [
     "n8n-community-node-package",
     "n8n-nodes-akeneo",
@@ -14,12 +14,13 @@
   "license": "MIT",
   "homepage": "https://pixel.ao",
   "author": {
-    "name": "Pixel Inifito",
-    "email": "edson.bandola@pixel.ao"
+    "name": "Flagbit GmbH",
+    "email": "info@flagbit.de",
+    "url": "http://flagbit.de"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/flagbit/akeneo-node-n8n"
+    "url": "git+https://github.com/flagbit/akeneo-node-n8n.git"
   },
   "main": "index.js",
   "scripts": {
@@ -64,5 +65,8 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "bugs": {
+    "url": "https://github.com/flagbit/akeneo-node-n8n/issues"
   }
 }
