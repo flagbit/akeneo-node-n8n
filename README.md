@@ -2,6 +2,7 @@
 
 # Akeneo n8n node
 
+This version is modified to provide pagination on the products. This pagination is presented as N8N items. Or the response error.
 
 ## Prerequisites
 
@@ -22,7 +23,7 @@ You need the following installed on your development machine:
 1. go to N8N settings
 2. go to communities nodes
 3. install the node with the name of `n8n-nodes-akeneo`
-4. example ![Banner image](https://github.com/pixelinfinito/akeneo-node-n8n/blob/main/images/example.png)
+4. example ![Banner image](https://github.com/flagbit/akeneo-node-n8n/blob/main/images/flagbit-install.png)
 
 ## Using locally
 
