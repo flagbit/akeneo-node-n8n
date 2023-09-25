@@ -34,10 +34,10 @@ These are the basic steps for working locally without using the NPM version.
     git clone https://github.com/flagbit/akeneo-node-n8n.git
     ```
 3. Run `npm i` to install dependencies.
-4. in the other terminal navigate to: C:\Users\{user}\AppData\Roaming\npm\node_modules\n8n. Or, wherever your node_modules are (use `npm -t` to find out)
+4. in the other terminal navigate to: C:\Users\{user}\AppData\Roaming\npm\node_modules\n8n. Or, wherever your global `node_modules` are (use `npm -t` to find out)
 5. Run
 			```
-				npm link n8n-nodes-akeneo
+				npm link @flagbit/n8n-nodes-akeneo
 			```
 6. To start n8n Run
 			```
