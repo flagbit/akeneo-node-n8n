@@ -22,7 +22,7 @@ You need the following installed on your development machine:
 
 1. go to N8N settings
 2. go to communities nodes
-3. install the node with the name of `n8n-nodes-akeneo`
+3. install the node with the name of `@flagbit/n8n-nodes-akeneo`
 4. example ![Banner image](https://github.com/flagbit/akeneo-node-n8n/blob/main/images/flagbit-install.png)
 
 ## Using locally
@@ -47,6 +47,8 @@ These are the basic steps for working locally without using the NPM version.
 ## Develop locally
 
 You will need pm2 (`npm i pm2 -g`)
+
+We use pm2 as it makes stopping n8n easier, otherwise you need to look up process ids etc. Also, it is cool.
 
 Start n8n using pm2: `pm2 start n8n`
 
