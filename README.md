@@ -58,7 +58,7 @@ This will trigger the akeneo node compilation, then restart the local n8n instan
 
 When you have finished, you can use pm to stop n8n: `pm2 stop n8n`
 
-> You can use `pm2 log n8n` to see your local port number
+> You can use `pm2 log n8n` to see your local port number. Knowing this makes it easier to find the local site.
 
 ## More information
 
