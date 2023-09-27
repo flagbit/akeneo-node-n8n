@@ -87,19 +87,19 @@ export class Akeneo implements INodeType {
 				//dados das credendicias
 				const credentials = await this.getCredentials('akeneoApi', itemIndex);
 
-				const ClientID = credentials.clientid;
+				const ClientID = credentials.client_id;
 				const Secret = credentials.secret;
 				const username = credentials.username;
 				const password = credentials.password;
 
 				const token = await getToken({
 					base64ClientIdSecretn: btoa(ClientID + ':' + Secret),
-					domain: credentials.domain as string,
+					domain: credentials.akeneo_base_url as string,
 					password: password as string,
 					username: username as string,
 				});
 
-				const baseURL = credentials.domain;
+				const baseURL = credentials.akeneo_base_url;
 				let response;
 
 				const groupsList = convertCollection(groups.groupsShow || [], 'groupsValue');
