@@ -1,6 +1,6 @@
-import {INodeExecutionData} from "n8n-workflow";
+import { INodeExecutionData } from 'n8n-workflow';
 
 export type PaginationResponse = {
-	error?: {},
-	data?: INodeExecutionData[],
+	error?: {};
+	data?: INodeExecutionData[];
 };

@@ -8,10 +8,10 @@ export const productProperties: INodeProperties[] = [
 		type: 'string',
 		default: '',
 		required: true,
-		displayOptions:{
-			show:{
+		displayOptions: {
+			show: {
 				resource: ['Produto'],
-				operation:['create', 'patch'],
+				operation: ['create', 'patch'],
 			},
 		},
 	},
@@ -20,10 +20,10 @@ export const productProperties: INodeProperties[] = [
 		name: 'nameSkuUpdate',
 		type: 'string',
 		default: '',
-		displayOptions:{
-			show:{
+		displayOptions: {
+			show: {
 				resource: ['Produto'],
-				operation:['patch'],
+				operation: ['patch'],
 			},
 		},
 	},
@@ -32,10 +32,10 @@ export const productProperties: INodeProperties[] = [
 		name: 'family',
 		type: 'string',
 		default: '',
-		displayOptions:{
-			show:{
+		displayOptions: {
+			show: {
 				resource: ['Produto'],
-				operation:['create', 'patch'],
+				operation: ['create', 'patch'],
 			},
 		},
 	},
@@ -44,10 +44,10 @@ export const productProperties: INodeProperties[] = [
 		name: 'parent',
 		type: 'string',
 		default: '',
-		displayOptions:{
-			show:{
+		displayOptions: {
+			show: {
 				resource: ['Produto'],
-				operation:['create', 'patch'],
+				operation: ['create', 'patch'],
 			},
 		},
 	},
@@ -56,10 +56,10 @@ export const productProperties: INodeProperties[] = [
 		name: 'enabled',
 		type: 'boolean',
 		default: true,
-		displayOptions:{
-			show:{
+		displayOptions: {
+			show: {
 				resource: ['Produto'],
-				operation:['create', 'patch'],
+				operation: ['create', 'patch'],
 			},
 		},
 	},
@@ -76,7 +76,7 @@ export const productProperties: INodeProperties[] = [
 			{
 				displayName: 'CategoryShow',
 				name: 'categoryShow',
-				values:[
+				values: [
 					{
 						displayName: 'categotyValue',
 						name: 'categotyValue',
@@ -86,10 +86,10 @@ export const productProperties: INodeProperties[] = [
 				],
 			},
 		],
-		displayOptions:{
-			show:{
+		displayOptions: {
+			show: {
 				resource: ['Produto'],
-				operation:['create', 'patch'],
+				operation: ['create', 'patch'],
 			},
 		},
 	},
@@ -107,7 +107,7 @@ export const productProperties: INodeProperties[] = [
 			{
 				displayName: 'groupsShow',
 				name: 'groupsShow',
-				values:[
+				values: [
 					{
 						displayName: 'groupsValue',
 						name: 'groupsValue',
@@ -117,10 +117,10 @@ export const productProperties: INodeProperties[] = [
 				],
 			},
 		],
-		displayOptions:{
-			show:{
+		displayOptions: {
+			show: {
 				resource: ['Produto'],
-				operation:['create', 'patch'],
+				operation: ['create', 'patch'],
 			},
 		},
 	},
@@ -138,7 +138,7 @@ export const productProperties: INodeProperties[] = [
 			{
 				displayName: 'priceShow',
 				name: 'priceShow',
-				values:[
+				values: [
 					{
 						displayName: 'priceValue',
 						name: 'priceValue',
@@ -154,10 +154,10 @@ export const productProperties: INodeProperties[] = [
 				],
 			},
 		],
-		displayOptions:{
-			show:{
+		displayOptions: {
+			show: {
 				resource: ['Produto'],
-				operation:['create', 'patch'],
+				operation: ['create', 'patch'],
 			},
 		},
 	},
@@ -167,10 +167,10 @@ export const productProperties: INodeProperties[] = [
 		type: 'string',
 		default: '',
 		placeholder: 'Digite o nome do produto a pesquisar',
-		displayOptions:{
-			show:{
+		displayOptions: {
+			show: {
 				resource: ['Produto'],
-				operation:['find', 'patch'],
+				operation: ['find', 'patch'],
 			},
 		},
 	},
@@ -180,10 +180,10 @@ export const productProperties: INodeProperties[] = [
 		type: 'string',
 		default: '',
 		placeholder: '/path/image.png',
-		displayOptions:{
-			show:{
+		displayOptions: {
+			show: {
 				resource: ['Produto'],
-				operation:['create', 'patch'],
+				operation: ['create', 'patch'],
 			},
 		},
 	},
@@ -194,14 +194,11 @@ export const productProperties: INodeProperties[] = [
 		description: 'This will call .../api/rest/v1/products/{your code here}',
 		default: '',
 		placeholder: '{your code here}',
-		displayOptions:{
-			show:{
+		displayOptions: {
+			show: {
 				resource: ['Produto'],
-				operation:['buildCall'],
+				operation: ['buildCall'],
 			},
 		},
 	},
 ];
-
-
-

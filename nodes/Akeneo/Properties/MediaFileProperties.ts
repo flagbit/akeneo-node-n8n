@@ -9,14 +9,11 @@ export const MediaFileProperties: INodeProperties[] = [
 		default: '',
 		placeholder: 'File name',
 		required: true,
-		displayOptions:{
-			show:{
+		displayOptions: {
+			show: {
 				resource: ['File'],
-				otherOperation:['find'],
+				otherOperation: ['find'],
 			},
 		},
 	},
 ];
-
-
-

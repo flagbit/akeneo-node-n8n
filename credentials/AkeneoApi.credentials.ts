@@ -8,7 +8,13 @@ import {
 	IAuthenticateGeneric,
 	IDataObject,
 } from 'n8n-workflow';
-import { AKENEO_AUTH_GRACE_PERIOD, AKENEO_REFRESH_TOKEN_EXPIRY, refreshExistingToken, requestNewToken, updateCredentials } from './akeneoAPiCredentialUtilities';
+import {
+	AKENEO_AUTH_GRACE_PERIOD,
+	AKENEO_REFRESH_TOKEN_EXPIRY,
+	refreshExistingToken,
+	requestNewToken,
+	updateCredentials,
+} from './akeneoAPiCredentialUtilities';
 
 export class AkeneoApi implements ICredentialType {
 	displayName = 'Akeneo API';
@@ -20,70 +26,70 @@ export class AkeneoApi implements ICredentialType {
 			name: 'akeneo_base_url',
 			type: 'string',
 			default: process.env.ENV_SERVER_AKENEO,
-			required: true
+			required: true,
 		},
 		{
 			displayName: 'Client ID',
 			name: 'client_id',
 			type: 'string',
 			default: '',
-			required: true
+			required: true,
 		},
 		{
 			displayName: 'Client Secret',
 			name: 'secret',
 			type: 'string',
 			default: '',
-			required: true
+			required: true,
 		},
 		{
 			displayName: 'Username',
 			name: 'username',
 			type: 'string',
 			default: '',
-			required: true
+			required: true,
 		},
 		{
 			displayName: 'Password',
 			name: 'password',
 			type: 'string',
 			default: '',
-			required: true
+			required: true,
 		},
 		{
 			displayName: 'Access Token (Clear to re-authenticate)',
 			name: 'access_token',
 			type: 'string',
 			default: '',
-			required: false
+			required: false,
 		},
 		{
 			displayName: 'Refresh Token (Filled automatically)',
 			name: 'refresh_token',
 			type: 'hidden',
 			default: '',
-			required: false
+			required: false,
 		},
 		{
 			displayName: 'Initial acquisition (Filled automatically)',
 			name: 'initial_aquisition',
 			type: 'hidden',
 			default: 0,
-			required: false
+			required: false,
 		},
 		{
 			displayName: 'Last Refresh (Filled automatically)',
 			name: 'last_refresh',
 			type: 'hidden',
 			default: 0,
-			required: false
+			required: false,
 		},
 		{
 			displayName: 'Token Lifetime (Filled automatically)',
 			name: 'token_lifetime',
 			type: 'hidden',
 			default: '',
-			required: false
+			required: false,
 		},
 		{
 			// This is a workaround!
@@ -98,11 +104,14 @@ export class AkeneoApi implements ICredentialType {
 			typeOptions: {
 				expirable: true,
 			},
-			default: ''
-		}
+			default: '',
+		},
 	];
 
-	async preAuthentication(this: IHttpRequestHelper, credentials: ICredentialDataDecryptedObject): Promise<IDataObject> {
+	async preAuthentication(
+		this: IHttpRequestHelper,
+		credentials: ICredentialDataDecryptedObject,
+	): Promise<IDataObject> {
 		const accessToken = credentials.access_token;
 		const refreshToken = credentials.refresh_token;
 		const initialAquisition = credentials.initial_aquisition;
@@ -110,14 +119,15 @@ export class AkeneoApi implements ICredentialType {
 		const tokenLifetime = credentials.token_lifetime;
 
 		if (
-			typeof accessToken !== 'string'
-			|| accessToken === ""
-			|| typeof refreshToken !== 'string'
-			|| refreshToken === ""
-			|| typeof initialAquisition !== 'number'
-			|| typeof tokenLifetime !== 'number'
-			|| typeof initialAquisition !== 'number'
-			|| (Date.now() - initialAquisition) >= AKENEO_REFRESH_TOKEN_EXPIRY * 1000) {
+			typeof accessToken !== 'string' ||
+			accessToken === '' ||
+			typeof refreshToken !== 'string' ||
+			refreshToken === '' ||
+			typeof initialAquisition !== 'number' ||
+			typeof tokenLifetime !== 'number' ||
+			typeof initialAquisition !== 'number' ||
+			Date.now() - initialAquisition >= AKENEO_REFRESH_TOKEN_EXPIRY * 1000
+		) {
 			const authResult = await requestNewToken(this, credentials);
 			credentials.initial_aquisition = Date.now();
 
@@ -127,8 +137,9 @@ export class AkeneoApi implements ICredentialType {
 		}
 
 		if (
-			typeof lastRefresh !== 'number'
-			|| (Date.now() - lastRefresh) + AKENEO_AUTH_GRACE_PERIOD >= tokenLifetime * 1000) {
+			typeof lastRefresh !== 'number' ||
+			Date.now() - lastRefresh + AKENEO_AUTH_GRACE_PERIOD >= tokenLifetime * 1000
+		) {
 			const authResult = await refreshExistingToken(this, credentials);
 
 			updateCredentials(credentials, authResult);
