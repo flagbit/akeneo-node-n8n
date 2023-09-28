@@ -162,15 +162,15 @@ export class AkeneoApi implements ICredentialType {
 	test: ICredentialTestRequest = {
 		request: {
 			baseURL: '={{$credentials?.akeneo_base_url}}',
-			url: '',
-			body: {
-				api_key: '={{$credentials?.api_key}}',
-				api_password: '={{$credentials?.api_password}}',
-			},
+			// Unfortunately, Akeneo has no quick endpoint to check the authentication
+			// Because of this, we request the locales, as this endpoint has a small amount of data
+			// and requests should be fairly quick. Also we can just request "en_US" to limit out
+			// to a single locale.
+			url: '/api/rest/v1/locales/en_US',
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			method: 'POST',
+			method: 'GET',
 		},
 	};
 }
