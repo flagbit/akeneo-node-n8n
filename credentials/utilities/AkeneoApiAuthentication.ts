@@ -21,7 +21,7 @@ export async function requestNewToken(
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
-			Authorization: 'Basic ' + basicAuthCredentials,
+			Authorization: `Basic ${basicAuthCredentials}`,
 		},
 		body: body,
 		json: true,
@@ -49,7 +49,7 @@ export async function refreshExistingToken(
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
-			Authorization: 'Basic ' + basicAuthCredentials,
+			Authorization: `Basic ${basicAuthCredentials}`,
 		},
 		body: body,
 		json: true,
@@ -78,7 +78,7 @@ export function updateCredentials(
 function getAuthenticationUrl(credentials: ICredentialDataDecryptedObject): string {
 	if (typeof credentials.akeneo_base_url !== 'string') {
 		throw new Error(
-			'Type ' + typeof credentials.akeneo_base_url + ' is not a valid type for an URL',
+			`Type ${typeof credentials.akeneo_base_url} is not a valid type for an URL`,
 		);
 	}
 
