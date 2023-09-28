@@ -1,17 +1,15 @@
 import * as akeneoRequest from "./akeneoRequest";
 import {changeToList} from "./changeToList";
 import {PaginationResponse} from "../types/paginationResponse";
+import { IAllExecuteFunctions } from "n8n-workflow";
 
 
-export async function paginateResponse(url: string, token: {
-	access_token: string;
-}): Promise<PaginationResponse> {
+export async function paginateResponse(nodeExecuteFunc: IAllExecuteFunctions, url: string): Promise<PaginationResponse> {
 	let akeneoItems: {}[] = [];
 	let response;
 	let next = url;
 	do {
-		response = await akeneoRequest.GET({
-			token: token.access_token,
+		response = await akeneoRequest.GET(nodeExecuteFunc, {
 			url: next,
 		});
 

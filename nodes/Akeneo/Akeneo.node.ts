@@ -1,5 +1,4 @@
-import {IExecuteFunctions} from 'n8n-core';
-import {INodeExecutionData, INodeType, INodeTypeDescription, NodeOperationError,} from 'n8n-workflow';
+import {IExecuteFunctions, INodeExecutionData, INodeType, INodeTypeDescription, NodeOperationError,} from 'n8n-workflow';
 
 import * as akeneoRequest from "./helpers/akeneoRequest";
 import {convertCollection} from './helpers/convertCollection';
@@ -9,7 +8,6 @@ import {FamilyProperties} from './Properties/FamilyProperties';
 import {MediaFileProperties} from "./Properties/MediaFileProperties";
 import {AkeneoProperties} from './Properties/AkeneoProperties';
 import {CategoryProperties} from './Properties/CategoryProperties';
-import {getToken} from './helpers/getToken';
 import FormData from 'form-data';
 import fs from "fs";
 import {paginateResponse} from "./helpers/pagination";
@@ -84,21 +82,8 @@ export class Akeneo implements INodeType {
 				const label_fr_FR = await this.getNodeParameter('fr_FR', itemIndex, '') as string;
 				const attributes = await this.getNodeParameter('attributes', itemIndex, {}) as { attributesShow: [] };
 
-				//dados das credendicias
+				// Configured credentials
 				const credentials = await this.getCredentials('akeneoApi', itemIndex);
-
-				const ClientID = credentials.client_id;
-				const Secret = credentials.secret;
-				const username = credentials.username;
-				const password = credentials.password;
-
-				const token = await getToken({
-					base64ClientIdSecretn: btoa(ClientID + ':' + Secret),
-					domain: credentials.akeneo_base_url as string,
-					password: password as string,
-					username: username as string,
-				});
-
 				const baseURL = credentials.akeneo_base_url;
 				let response;
 
@@ -125,9 +110,8 @@ export class Akeneo implements INodeType {
 										});
 									}
 								}
-
-								response = await akeneoRequest.POST({
-									token: token.access_token,
+								
+								response = await akeneoRequest.POST(this, {
 									url: baseURL + '/api/rest/v1/products',
 									body: {
 										"identifier": identifier,
@@ -161,8 +145,7 @@ export class Akeneo implements INodeType {
 										}));
 										form.append('file', newFile, 'logo.png');
 
-										const responseFile = await akeneoRequest.POST({
-											token: token.access_token,
+										const responseFile = await akeneoRequest.POST(this, {
 											url: baseURL + '/api/rest/v1/media-files',
 											body: form.getBuffer(),
 											headers: {
@@ -177,7 +160,7 @@ export class Akeneo implements INodeType {
 								break;
 
 							case 'findAll':
-								const findAllResult = await paginateResponse(baseURL + '/api/rest/v1/products?limit=100', token);
+								const findAllResult = await paginateResponse(this, baseURL + '/api/rest/v1/products?limit=100');
 								// We return in two different ways, because
 								// The original plugin is not pagination aware
 								// It can only return one item, we want multiple items
@@ -190,7 +173,7 @@ export class Akeneo implements INodeType {
 								break;
 
 							case 'buildCall':
-								const buildCallResult = await paginateResponse(baseURL + '/api/rest/v1/products' + apiRequest, token);
+								const buildCallResult = await paginateResponse(this, baseURL + '/api/rest/v1/products' + apiRequest);
 								if (buildCallResult.error) {
 									item.json['message'] = buildCallResult.error;
 								} else if (buildCallResult.data) {
@@ -199,8 +182,7 @@ export class Akeneo implements INodeType {
 								break;
 
 							case 'find':
-								response = await akeneoRequest.GET({
-									token: token.access_token,
+								response = await akeneoRequest.GET(this, {
 									url: baseURL + '/api/rest/v1/products/' + productNameQuery,
 								});
 
@@ -211,8 +193,7 @@ export class Akeneo implements INodeType {
 								item.json["response"] = response;
 								break;
 							case 'delete':
-								response = await akeneoRequest.DELETE({
-									token: token.access_token,
+								response = await akeneoRequest.DELETE(this, {
 									url: baseURL + '/api/rest/v1/products/' + productNameQuery,
 								});
 								if (response.error) {
@@ -222,8 +203,7 @@ export class Akeneo implements INodeType {
 								break;
 
 							case 'patch':
-								response = await akeneoRequest.PATCH({
-									token: token.access_token,
+								response = await akeneoRequest.PATCH(this, {
 									url: baseURL + '/api/rest/v1/products/' + identifier,
 									body: {
 										"identifier": identifier,
@@ -256,8 +236,7 @@ export class Akeneo implements INodeType {
 					case 'Family':
 						switch (familyOperation) {
 							case 'find':
-								response = await akeneoRequest.GET({
-									token: token.access_token,
+								response = await akeneoRequest.GET(this, {
 									url: baseURL + '/api/rest/v1/families/' + familyNameAdd,
 								});
 								if (response.error) {
@@ -267,8 +246,7 @@ export class Akeneo implements INodeType {
 								break;
 							case 'findAll':
 
-								response = await akeneoRequest.GET({
-									token: token.access_token,
+								response = await akeneoRequest.GET(this, {
 									url: baseURL + '/api/rest/v1/families',
 								});
 								if (response.error) {
@@ -282,8 +260,7 @@ export class Akeneo implements INodeType {
 
 								const attributesList = convertCollection(attributes!.attributesShow || [], 'attributeValue');
 
-								response = await akeneoRequest.POST({
-									token: token.access_token,
+								response = await akeneoRequest.POST(this, {
 									url: baseURL + '/api/rest/v1/families',
 									body: {
 										"code": familyNameAdd,
@@ -308,8 +285,7 @@ export class Akeneo implements INodeType {
 					case 'Locale':
 						switch (otherOperation) {
 							case 'find':
-								response = await akeneoRequest.GET({
-									token: token.access_token,
+								response = await akeneoRequest.GET(this, {
 									url: baseURL + '/api/rest/v1/locales/' + localeInput,
 								});
 								if (response.error) {
@@ -318,8 +294,7 @@ export class Akeneo implements INodeType {
 								item.json["response"] = response;
 								break;
 							case 'findAll':
-								response = await akeneoRequest.GET({
-									token: token.access_token,
+								response = await akeneoRequest.GET(this, {
 									url: baseURL + '/api/rest/v1/locales',
 								});
 								if (response.error) {
@@ -335,8 +310,7 @@ export class Akeneo implements INodeType {
 					case 'File':
 						switch (otherOperation) {
 							case 'find':
-								response = await akeneoRequest.GET({
-									token: token.access_token,
+								response = await akeneoRequest.GET(this, {
 									url: baseURL + '/api/rest/v1/media-files/' + fileName,
 								});
 								if (response.error) {
@@ -346,8 +320,7 @@ export class Akeneo implements INodeType {
 								break;
 
 							case 'findAll':
-								response = await akeneoRequest.GET({
-									token: token.access_token,
+								response = await akeneoRequest.GET(this, {
 									url: baseURL + '/api/rest/v1/media-files',
 								});
 								if (response.error) {
@@ -363,8 +336,7 @@ export class Akeneo implements INodeType {
 					case 'Category':
 						switch (categoryAndGroupOperation) {
 							case 'findAll':
-								response = await akeneoRequest.GET({
-									token: token.access_token,
+								response = await akeneoRequest.GET(this, {
 									url: baseURL + '/api/rest/v1/categories',
 								});
 								if (response.error) {
@@ -374,8 +346,7 @@ export class Akeneo implements INodeType {
 								break;
 
 							case 'find':
-								response = await akeneoRequest.GET({
-									token: token.access_token,
+								response = await akeneoRequest.GET(this, {
 									url: baseURL + '/api/rest/v1/categories/' + categoryInput,
 								});
 
@@ -393,8 +364,7 @@ export class Akeneo implements INodeType {
 								const category_en_US = await this.getNodeParameter('category_en_US', itemIndex, '') as string;
 								const category_fr_FR = await this.getNodeParameter('category_fr_FR', itemIndex, '') as string;
 
-								response = await akeneoRequest.POST({
-									token: token.access_token,
+								response = await akeneoRequest.POST(this, {
 									url: baseURL + '/api/rest/v1/categories',
 									body: {
 										"code": categoryInput,
