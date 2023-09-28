@@ -34,7 +34,7 @@ export class Akeneo implements INodeType {
 		outputs: ['main'],
 		credentials: [
 			{
-				name: 'akeneoApi',
+				name: akeneoRequest.AKENEO_CREDENTIALS_NAME,
 				required: true,
 			},
 		],

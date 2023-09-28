@@ -12,11 +12,13 @@ type typeAkeneoRequest = {
 	headers?: {};
 };
 
+export const AKENEO_CREDENTIALS_NAME = 'akeneoApi';
+
 const GET = async (nodeExecuteFunc: IAllExecuteFunctions, { url, headers }: typeAkeneoRequest) => {
 	try {
 		return nodeExecuteFunc.helpers.httpRequestWithAuthentication.call(
 			nodeExecuteFunc,
-			'akeneoApi',
+			AKENEO_CREDENTIALS_NAME,
 			{
 				url: url,
 				method: 'GET',
@@ -35,7 +37,7 @@ const POST = async (
 	try {
 		return nodeExecuteFunc.helpers.httpRequestWithAuthentication.call(
 			nodeExecuteFunc,
-			'akeneoApi',
+			AKENEO_CREDENTIALS_NAME,
 			{
 				url: url,
 				method: 'POST',
@@ -56,7 +58,7 @@ const PATCH = async (
 	try {
 		return nodeExecuteFunc.helpers.httpRequestWithAuthentication.call(
 			nodeExecuteFunc,
-			'akeneoApi',
+			AKENEO_CREDENTIALS_NAME,
 			{
 				url: url,
 				method: 'PATCH',
@@ -77,7 +79,7 @@ const DELETE = async (
 	try {
 		return nodeExecuteFunc.helpers.httpRequestWithAuthentication.call(
 			nodeExecuteFunc,
-			'akeneoApi',
+			AKENEO_CREDENTIALS_NAME,
 			{
 				url: url,
 				method: 'DELETE',
