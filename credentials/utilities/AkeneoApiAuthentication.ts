@@ -66,20 +66,20 @@ export function updateCredentials(
 	credentials: ICredentialDataDecryptedObject,
 	authResponse: AkeneoAuthResponse,
 ): ICredentialDataDecryptedObject {
-	credentials.access_token = authResponse.access_token;
-	credentials.refresh_token = authResponse.refresh_token;
-	credentials.last_refresh = Date.now();
-	credentials.token_lifetime = authResponse.expires_in;
-	credentials.always_expired = '';
+	const { access_token, refresh_token, expires_in } = authResponse;
 
-	return credentials;
+	return Object.assign(credentials, {
+		access_token,
+		refresh_token,
+		token_lifetime: expires_in,
+		last_refresh: Date.now(),
+		always_expired: '',
+	});
 }
 
 function getAuthenticationUrl(credentials: ICredentialDataDecryptedObject): string {
 	if (typeof credentials.akeneo_base_url !== 'string') {
-		throw new Error(
-			`Type ${typeof credentials.akeneo_base_url} is not a valid type for an URL`,
-		);
+		throw new Error(`Type ${typeof credentials.akeneo_base_url} is not a valid type for an URL`);
 	}
 
 	return credentials.akeneo_base_url.replace(/\/+$/, '') + AKENEO_AUTHENTICATION_ROUTE;

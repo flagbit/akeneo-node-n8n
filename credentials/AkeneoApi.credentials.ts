@@ -131,6 +131,7 @@ export class AkeneoApi implements ICredentialType {
 			const authResult = await requestNewToken(this, credentials);
 			credentials.initial_aquisition = Date.now();
 
+			// This has side-effects and updates credentials.
 			updateCredentials(credentials, authResult);
 
 			return credentials;
@@ -142,6 +143,7 @@ export class AkeneoApi implements ICredentialType {
 		) {
 			const authResult = await refreshExistingToken(this, credentials);
 
+			// This has side-effects and updates credentials.
 			updateCredentials(credentials, authResult);
 
 			return credentials;
