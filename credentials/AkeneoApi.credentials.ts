@@ -14,7 +14,7 @@ import {
 	refreshExistingToken,
 	requestNewToken,
 	updateCredentials,
-} from './akeneoAPiCredentialUtilities';
+} from './utilities/AkeneoApiAuthentication';
 
 export class AkeneoApi implements ICredentialType {
 	displayName = 'Akeneo API';

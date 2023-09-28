@@ -1,10 +1,5 @@
 import { ICredentialDataDecryptedObject, IHttpRequestHelper } from 'n8n-workflow';
-
-export type AkeneoAuthResponse = {
-	access_token: string;
-	refresh_token: string;
-	expires_in: number;
-};
+import { AkeneoAuthResponse } from '../types/AkeneoApi';
 
 export const AKENEO_AUTH_GRACE_PERIOD: number = 5 * 60 * 1000; // 5 minutes
 export const AKENEO_REFRESH_TOKEN_EXPIRY: number = 13 * 24 * 60 * 60 * 1000; // 13 Days
