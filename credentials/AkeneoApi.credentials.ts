@@ -3,20 +3,17 @@ import {
 	ICredentialDataDecryptedObject,
 	ICredentialTestRequest,
 	ICredentialType,
-	IHttpRequestOptions,
+	IHttpRequestHelper,
 	INodeProperties,
+	IAuthenticateGeneric,
+	IDataObject,
 } from 'n8n-workflow';
-
-type AkeneoAuthResponse = {
-	access_token: string,
-	refresh_token: string,
-	expires_in: number
-};
+import { AKENEO_AUTH_GRACE_PERIOD, AKENEO_REFRESH_TOKEN_EXPIRY, refreshExistingToken, requestNewToken, updateCredentials } from './akeneoAPiCredentialUtilities';
 
 export class AkeneoApi implements ICredentialType {
 	displayName = 'Akeneo API';
 	name = 'akeneoApi';
-	documentationUrl = 'https://github.com/flagbit/akeneo-node-n8n';
+	documentationUrl = 'https://github.com/pixelinfinito/akeneo-node-n8n';
 	properties: INodeProperties[] = [
 		{
 			displayName: 'Akeneo Base URL',
@@ -53,7 +50,103 @@ export class AkeneoApi implements ICredentialType {
 			default: '',
 			required: true
 		},
+		{
+			displayName: 'Access Token (Clear to re-authenticate)',
+			name: 'access_token',
+			type: 'string',
+			default: '',
+			required: false
+		},
+		{
+			displayName: 'Refresh Token (Filled automatically)',
+			name: 'refresh_token',
+			type: 'hidden',
+			default: '',
+			required: false
+		},
+		{
+			displayName: 'Initial acquisition (Filled automatically)',
+			name: 'initial_aquisition',
+			type: 'hidden',
+			default: 0,
+			required: false
+		},
+		{
+			displayName: 'Last Refresh (Filled automatically)',
+			name: 'last_refresh',
+			type: 'hidden',
+			default: 0,
+			required: false
+		},
+		{
+			displayName: 'Token Lifetime (Filled automatically)',
+			name: 'token_lifetime',
+			type: 'hidden',
+			default: '',
+			required: false
+		},
+		{
+			// This is a workaround!
+			// By using an expirable field which never gets a value,
+			// we can ensure the login is checked everytime. The preAuthentication
+			// method only updates data if this property is empty.
+			// In n8n >1.0.5 <=1.7.1 this is a working solution, see here:
+			// https://github.com/n8n-io/n8n/blob/ebce6fe1b022fd259c00f7e1544a9e97e5f108e8/packages/cli/src/CredentialsHelper.ts#L203
+			displayName: 'Always expired trigger',
+			name: 'always_expired',
+			type: 'hidden',
+			typeOptions: {
+				expirable: true,
+			},
+			default: ''
+		}
 	];
+
+	async preAuthentication(this: IHttpRequestHelper, credentials: ICredentialDataDecryptedObject): Promise<IDataObject> {
+		const accessToken = credentials.access_token;
+		const refreshToken = credentials.refresh_token;
+		const initialAquisition = credentials.initial_aquisition;
+		const lastRefresh = credentials.last_refresh;
+		const tokenLifetime = credentials.token_lifetime;
+
+		if (
+			typeof accessToken !== 'string'
+			|| accessToken === ""
+			|| typeof refreshToken !== 'string'
+			|| refreshToken === ""
+			|| typeof initialAquisition !== 'number'
+			|| typeof tokenLifetime !== 'number'
+			|| typeof initialAquisition !== 'number'
+			|| (Date.now() - initialAquisition) >= AKENEO_REFRESH_TOKEN_EXPIRY * 1000) {
+			const authResult = await requestNewToken(this, credentials);
+			credentials.initial_aquisition = Date.now();
+
+			updateCredentials(credentials, authResult);
+
+			return credentials;
+		}
+
+		if (
+			typeof lastRefresh !== 'number'
+			|| (Date.now() - lastRefresh) + AKENEO_AUTH_GRACE_PERIOD >= tokenLifetime * 1000) {
+			const authResult = await refreshExistingToken(this, credentials);
+
+			updateCredentials(credentials, authResult);
+
+			return credentials;
+		}
+
+		return credentials;
+	}
+
+	authenticate: IAuthenticateGeneric = {
+		type: 'generic',
+		properties: {
+			headers: {
+				Authorization: '=Bearer {{$credentials.access_token}}',
+			},
+		},
+	};
 
 	test: ICredentialTestRequest = {
 		request: {
@@ -69,63 +162,4 @@ export class AkeneoApi implements ICredentialType {
 			method: 'POST',
 		},
 	};
-
-	private readonly akeneoAuthenticationRoute: string = '/api/oauth/v1/token';
-
-	async authenticate(
-		credentials: ICredentialDataDecryptedObject,
-		requestOptions: IHttpRequestOptions,
-	): Promise<IHttpRequestOptions> {
-		const authResult = await this.requestNewToken(credentials);
-
-		return this.addTokenToRequestOptions(requestOptions, authResult.access_token);
-	}
-
-	private async requestNewToken(credentials: ICredentialDataDecryptedObject): Promise<AkeneoAuthResponse> {
-		const basicAuthCredentials = this.getBasicAuthCredentials(credentials);
-		const body = {
-			grant_type: "password",
-			username: credentials.username,
-			password: credentials.password
-		};
-
-		const response = await axios.post(
-			this.getAuthenticationUrl(credentials),
-			body,
-			{
-				headers: {
-					'Content-Type': "application/json",
-					'Authorization': "Basic "+basicAuthCredentials,
-				},
-			}
-		);
-
-		return {
-			access_token: response.data.access_token,
-			refresh_token: response.data.refresh_token,
-			expires_in: response.data.expires_in
-		};
-	}
-
-	private addTokenToRequestOptions(requestOptions: IHttpRequestOptions, accessToken: string): IHttpRequestOptions {
-		requestOptions.headers = {
-			...requestOptions.headers,
-			Authorization: `Bearer ${accessToken}`,
-
-		};
-
-		return requestOptions;
-	}
-
-	private getAuthenticationUrl(credentials: ICredentialDataDecryptedObject): string {
-		if (typeof credentials.akeneo_base_url !== 'string') {
-			throw new Error('Type ' + typeof credentials.akeneo_base_url + ' is not a valid type for an URL');
-		}
-
-		return credentials.akeneo_base_url.replace(/\/+$/, "") + this.akeneoAuthenticationRoute;
-	}
-
-	private getBasicAuthCredentials(credentials: ICredentialDataDecryptedObject): string {
-		return Buffer.from(`${credentials.client_id}:${credentials.secret}`).toString('base64');
-	}
 }
