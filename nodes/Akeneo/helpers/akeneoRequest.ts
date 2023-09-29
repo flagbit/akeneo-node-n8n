@@ -1,58 +1,96 @@
-
-import axios from "axios";
+import {
+	IAllExecuteFunctions,
+	ICredentialDataDecryptedObject,
+	IHttpRequestHelper,
+	RequestHelperFunctions,
+} from 'n8n-workflow';
 
 type typeAkeneoRequest = {
-	baseUrl?: string,
-	url: string,
-	body?:{},
-	headers?: {},
-	token: string
+	baseUrl?: string;
+	url: string;
+	body?: {};
+	headers?: {};
 };
 
-const GET = async ({ url, headers, token} : typeAkeneoRequest)=>{
-	axios.defaults.headers.common["Authorization"] =  'Bearer '+token;
-	try{
-		const response = await axios.get(url, headers);
-		return response.data;
-	}catch(e){
-		return {error: e};
+export const AKENEO_CREDENTIALS_NAME = 'akeneoApi';
+
+const GET = async (nodeExecuteFunc: IAllExecuteFunctions, { url, headers }: typeAkeneoRequest) => {
+	try {
+		return nodeExecuteFunc.helpers.httpRequestWithAuthentication.call(
+			nodeExecuteFunc,
+			AKENEO_CREDENTIALS_NAME,
+			{
+				url: url,
+				method: 'GET',
+				headers: headers,
+			},
+		);
+	} catch (e) {
+		return { error: e };
 	}
 };
 
-const POST = async({ url, body, headers, token} : typeAkeneoRequest)=>{
-	axios.defaults.headers.common["Authorization"] =  'Bearer '+token;
-	try{
-		const response = await axios.post(url, body, {
-			headers,
-		});
-		return response.data;
-	}catch(e){
-		return {error: e};
+const POST = async (
+	nodeExecuteFunc: IAllExecuteFunctions,
+	{ url, body, headers }: typeAkeneoRequest,
+) => {
+	try {
+		return nodeExecuteFunc.helpers.httpRequestWithAuthentication.call(
+			nodeExecuteFunc,
+			AKENEO_CREDENTIALS_NAME,
+			{
+				url: url,
+				method: 'POST',
+				headers: headers,
+				body: body,
+				json: true,
+			},
+		);
+	} catch (e) {
+		return { error: e };
 	}
 };
 
-const  PATCH =  async({url, body, headers, token} : typeAkeneoRequest)=>{
-	axios.defaults.headers.common["Authorization"] =  'Bearer '+token;
-	try{
-		const response = await axios.patch(url, body, {
-			headers,
-		});
-		return response.data;
-	}catch(e){
-		return {error: e};
+const PATCH = async (
+	nodeExecuteFunc: IAllExecuteFunctions,
+	{ url, body, headers }: typeAkeneoRequest,
+) => {
+	try {
+		return nodeExecuteFunc.helpers.httpRequestWithAuthentication.call(
+			nodeExecuteFunc,
+			AKENEO_CREDENTIALS_NAME,
+			{
+				url: url,
+				method: 'PATCH',
+				headers: headers,
+				body: body,
+				json: true,
+			},
+		);
+	} catch (e) {
+		return { error: e };
 	}
 };
 
-const DELETE =  async ({ url, body, headers, token} : typeAkeneoRequest)=>{
-	axios.defaults.headers.common["Authorization"] =  'Bearer '+token;
-	try{
-		const response = await axios.delete(url,{
-			headers,
-		});
-		return response.data;
-	}catch(e){
-		return {error: e};
+const DELETE = async (
+	nodeExecuteFunc: IAllExecuteFunctions,
+	{ url, body, headers }: typeAkeneoRequest,
+) => {
+	try {
+		return nodeExecuteFunc.helpers.httpRequestWithAuthentication.call(
+			nodeExecuteFunc,
+			AKENEO_CREDENTIALS_NAME,
+			{
+				url: url,
+				method: 'DELETE',
+				headers: headers,
+				body: body,
+				json: true,
+			},
+		);
+	} catch (e) {
+		return { error: e };
 	}
 };
 
-export  {GET, POST, DELETE, PATCH, typeAkeneoRequest};
+export { GET, POST, DELETE, PATCH, typeAkeneoRequest };

@@ -7,7 +7,7 @@ export const LocaleProprties: INodeProperties[] = [
 		type: 'options',
 		default: 'en_US',
 		required: true,
-		options:[
+		options: [
 			{
 				name: 'de_DE',
 				value: 'de_DE',
@@ -21,10 +21,10 @@ export const LocaleProprties: INodeProperties[] = [
 				value: 'fr_FR',
 			},
 		],
-		displayOptions:{
-			show:{
+		displayOptions: {
+			show: {
 				resource: ['Locale'],
-				operation:['find'],
+				operation: ['find'],
 			},
 		},
 	},
