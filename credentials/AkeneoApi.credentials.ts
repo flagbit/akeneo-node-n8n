@@ -1,12 +1,12 @@
 import axios from 'axios';
 import {
+	IAuthenticateGeneric,
 	ICredentialDataDecryptedObject,
 	ICredentialTestRequest,
 	ICredentialType,
+	IDataObject,
 	IHttpRequestHelper,
 	INodeProperties,
-	IAuthenticateGeneric,
-	IDataObject,
 } from 'n8n-workflow';
 import {
 	AKENEO_AUTH_GRACE_PERIOD,

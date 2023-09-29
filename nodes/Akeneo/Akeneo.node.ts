@@ -138,12 +138,12 @@ export class Akeneo implements INodeType {
 								response = await akeneoRequest.POST(this, {
 									url: baseURL + '/api/rest/v1/products',
 									body: {
-										identifier: identifier,
-										family: family,
+										identifier,
+										family,
 										groups: groupsList,
 										parent: parent || null,
 										categories: categoriesList,
-										enabled: enabled,
+										enabled,
 										values: {
 											price: [
 												{
@@ -164,7 +164,7 @@ export class Akeneo implements INodeType {
 										form.append(
 											'product',
 											JSON.stringify({
-												identifier: identifier,
+												identifier,
 												attribute: 'picture',
 												scope: null,
 												locale: null,
@@ -238,12 +238,12 @@ export class Akeneo implements INodeType {
 								response = await akeneoRequest.PATCH(this, {
 									url: baseURL + '/api/rest/v1/products/' + identifier,
 									body: {
-										identifier: identifier,
-										family: family,
+										identifier,
+										family,
 										groups: groupsList,
 										parent: parent || null,
 										categories: categoriesList,
-										enabled: enabled,
+										enabled,
 										values: {
 											price: [
 												{

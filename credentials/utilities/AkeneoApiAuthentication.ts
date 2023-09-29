@@ -3,7 +3,7 @@ import { AkeneoAuthResponse } from '../types/AkeneoApi';
 
 export const AKENEO_AUTH_GRACE_PERIOD: number = 5 * 60 * 1000; // 5 minutes
 export const AKENEO_REFRESH_TOKEN_EXPIRY: number = 13 * 24 * 60 * 60 * 1000; // 13 Days
-const AKENEO_AUTHENTICATION_ROUTE: string = '/api/oauth/v1/token';
+const AKENEO_AUTHENTICATION_ROUTE = '/api/oauth/v1/token';
 
 export async function requestNewToken(
 	http: IHttpRequestHelper,
@@ -23,7 +23,7 @@ export async function requestNewToken(
 			'Content-Type': 'application/json',
 			Authorization: `Basic ${basicAuthCredentials}`,
 		},
-		body: body,
+		body,
 		json: true,
 	});
 
@@ -51,7 +51,7 @@ export async function refreshExistingToken(
 			'Content-Type': 'application/json',
 			Authorization: `Basic ${basicAuthCredentials}`,
 		},
-		body: body,
+		body,
 		json: true,
 	});
 

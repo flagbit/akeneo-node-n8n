@@ -20,9 +20,9 @@ const GET = async (nodeExecuteFunc: IAllExecuteFunctions, { url, headers }: type
 			nodeExecuteFunc,
 			AKENEO_CREDENTIALS_NAME,
 			{
-				url: url,
+				url,
 				method: 'GET',
-				headers: headers,
+				headers,
 			},
 		);
 	} catch (e) {
@@ -39,10 +39,10 @@ const POST = async (
 			nodeExecuteFunc,
 			AKENEO_CREDENTIALS_NAME,
 			{
-				url: url,
+				url,
 				method: 'POST',
-				headers: headers,
-				body: body,
+				headers,
+				body,
 				json: true,
 			},
 		);
@@ -60,10 +60,10 @@ const PATCH = async (
 			nodeExecuteFunc,
 			AKENEO_CREDENTIALS_NAME,
 			{
-				url: url,
+				url,
 				method: 'PATCH',
-				headers: headers,
-				body: body,
+				headers,
+				body,
 				json: true,
 			},
 		);
@@ -81,10 +81,10 @@ const DELETE = async (
 			nodeExecuteFunc,
 			AKENEO_CREDENTIALS_NAME,
 			{
-				url: url,
+				url,
 				method: 'DELETE',
-				headers: headers,
-				body: body,
+				headers,
+				body,
 				json: true,
 			},
 		);
